@@ -17,6 +17,7 @@ LICENSE: MIT
 '''
 
 import sys
+import ordereddict
 
 if (sys.version_info[:2] < (2, 7)):
     import simplejson as json
@@ -46,13 +47,13 @@ class Json2Html:
         if 'json' in kwargs and kwargs['json']:
             self.json_input = kwargs['json']
             try:
-                json.loads(self.json_input)
+                json.loads(self.json_input, object_pairs_hook=ordereddict.OrderedDict)
             except:
                 self.json_input = json.dumps(self.json_input)
         else:
             raise Exception('Can\'t convert NULL!')
 
-        inputtedJson = json.loads(self.json_input)
+        inputtedJson = json.loads(self.json_input, object_pairs_hook=ordereddict.OrderedDict)
         return self.iterJson(inputtedJson)
 
     def columnHeadersFromListOfDicts(self, inputtedJson):
@@ -162,4 +163,4 @@ class Json2Html:
             raise Exception('Not a valid JSON list')
         return convertedOutput
 
-json2html = Json2Html()
+jsonconv = Json2Html()
